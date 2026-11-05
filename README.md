@@ -1,6 +1,5 @@
 # Minesweeper library
-Welcome to Minesweeper repository. This is my simple library for
-minesweeper games.
+Welcome to the Minesweeper repository. This is my simple library for building minesweeper games.
 
 > [!WARNING]
 > That project is currently in development, after pushing it here I'll add:
