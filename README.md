@@ -3,9 +3,10 @@ Welcome to the Minesweeper repository. This is my simple library for building mi
 
 > [!WARNING]
 > That project is currently in development, after pushing it here I'll add:
-> - [x] A difficulty settings
-> - [ ] A solver algorithm
-> - [ ] A strategies's comparasion
+> - [x] Difficulty settings
+> - [ ] Match saving system
+> - [ ] Solver algorithm
+> - [ ] Strategies's comparasion
 
 ## Main Information
 Library is single-class and the main code is in two files:
