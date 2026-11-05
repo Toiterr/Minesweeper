@@ -4,7 +4,7 @@ minesweeper games.
 
 > [!WARNING]
 > That project is currently in development, after pushing it here I'll add:
-> - [ ] A difficulty settings
+> - [x] A difficulty settings
 > - [ ] A solver algorithm
 > - [ ] A strategies's comparasion
 
