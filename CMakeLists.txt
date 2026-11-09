@@ -27,15 +27,6 @@ target_include_directories(Minesweeper
 		minesweeper
 )
 
-add_executable(MinesweeperApp
-	app/main.cpp
-)
-
-target_link_libraries(MinesweeperApp
-	PRIVATE
-		Minesweeper
-)
-
 add_executable(MinesweeperTests
 	tests/tests.cpp
 )
@@ -44,4 +35,28 @@ target_link_libraries(MinesweeperTests
 	PRIVATE
 		Minesweeper
 		gtest gtest_main
+)
+
+add_library(MinesweeperAlg
+	solver/Solver.cpp
+)
+
+target_include_directories(MinesweeperAlg
+	PUBLIC
+		solver
+)
+
+target_link_libraries(MinesweeperAlg
+	PRIVATE
+		Minesweeper
+)
+
+add_executable(MinesweeperApp
+	app/main.cpp
+)
+
+target_link_libraries(MinesweeperApp
+	PRIVATE
+		Minesweeper
+		MinesweeperAlg
 )

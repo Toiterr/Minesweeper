@@ -30,6 +30,29 @@ TEST(GameTest, CorrectMineAmount) {
 	}
 }
 
+TEST(GameTest, CorrectAroundMinesCount) {
+	for (int n = 1; n < 10; n++) {
+		for (int am = 0; am < n * n; am++) {
+			Game a(n, am);
+			a.start(0, 0);
+			for (int x = 0; x < a.getSize(); x++) {
+				for (int y = 0; y < a.getSize(); y++) {
+					if (!a.isMine(x, y)) {
+						a.open(x, y);
+						int real = 0;
+						for (int dx = -1; dx < 2; dx++) {
+							for (int dy = -1; dy < 2; dy++) {
+								real += a.isMine(x + dx, y + dy);
+							}
+						}
+						ASSERT_EQ(real, a.getAroundMines(x, y));
+					}
+				}
+			}
+		}
+	}
+}
+
 TEST(GameTest, FlaggingIsntOpening) {
 	for (int n = 1; n < 10; n++) {
 		Game a(n, n * n / 6.4);

@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <Game.h>
+#include <Solver.h>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
@@ -46,39 +47,56 @@ int main() {
 		a.open(x - 1, y - 1); //likewise
 		show(a);
 		bool gameContinues = true;
-
+		Solver solver(a);
 		do {	
-			std::cout << "Enter operation and pos: ";
-			bool op;
+			std::cout << "Enter operation(0 - open, 1 - flag, 2 - solverStep) and pos: ";
+			int op;
 			int x;
 			int y;
 			std::cin >> op >> x >> y;
-			Result res;
-			if (op) {
-				res = a.flag(x - 1, y - 1);
-			}
-			else {
-				res = a.open(x - 1, y - 1);
+
+			switch (op) {
+			case 2:
+				solver.step();
+				break;
+			case 1:
+				switch (a.flag(x - 1, y - 1)) {
+				case Result::InvalidCord:
+					std::cout << "You entered invalid coordinates";
+					break;
+				case Result::AlreadyOpened:
+					std::cout << "You already opened that cell";
+					break;
+				case Result::Win:
+					std::cout << "You win!";
+					gameContinues = false;
+					break;
+				default:
+					break;
+				}
+				break;
+			case 0:
+				switch (a.open(x - 1, y - 1)) {
+				case Result::InvalidCord:
+					std::cout << "You entered invalid coordinates";
+					break;
+				case Result::AlreadyOpened:
+					std::cout << "You already opened that cell";
+					break;
+				case Result::Lose:
+					std::cout << "You lose :(";
+					gameContinues = false;
+					break;
+				case Result::Win:
+					std::cout << "You win!";
+					gameContinues = false;
+					break;
+				default:
+					break;
+				}
+				break;
 			}
 			show(a);
-			switch (res) {
-			case Result::InvalidCord:
-				std::cout << "You entered invalid coordinates";
-				break;
-			case Result::AlreadyOpened:
-				std::cout << "You already opened that cell";
-				break;
-			case Result::Lose:
-				std::cout << "You lose :(";
-				gameContinues = false;
-				break;
-			case Result::Win:
-				std::cout << "You win!";
-				gameContinues = false;
-				break;
-			default:
-				break;
-			}
 			std::cout << std::endl;
 		} while (gameContinues);
 	}

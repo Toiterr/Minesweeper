@@ -39,9 +39,6 @@ Result Game::open(int x, int y) {
 	if (cells_[y*gridSize_+x].mine) {
 		return Result::Lose;
 	}
-	if (!count_) {
-		return Result::Win;
-	}
 	//directories to check(neighboring cells)
 	int dirx[8] = { 0, 0, -1, -1, -1, 1, 1, 1 };
 	int diry[8] = { -1, 1, -1, 0, 1, -1, 0, 1 };
@@ -56,6 +53,9 @@ Result Game::open(int x, int y) {
 		}
 	}
 	cells_[y*gridSize_+x].aroundmines = aroundmines;
+	if (!count_) {
+		return Result::Win;
+	}
 	if (!aroundmines) { //DFS opening if there is 0 mines around
 		for (int i = 0; i < 8; i++) {
 			if ((x + dirx[i]) >= 0 && (x + dirx[i]) < gridSize_ &&
