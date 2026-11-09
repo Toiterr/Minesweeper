@@ -4,9 +4,9 @@ minesweeper games.
 
 > [!WARNING]
 > That project is currently in development, after pushing it here I'll add:
-> - [ ] A difficulty settings
-> - [ ] A solver algorithm
-> - [ ] A strategies's comparasion
+> - [x] Difficulty settings
+> - [ ] Solver algorithm
+> - [ ] Strategy comparison
 
 ## Main Information
 Library is single-class and all main code is in two files:
@@ -52,9 +52,9 @@ int Game::getAroundMines(...) { ... }
 
 Also, repository have:
 
-1. A probe console-based app to play minesweeper on NxN field: main.cpp <br>
+1. A probe console-based app to play minesweeper on NxN field: main.cpp  
 *With your leave, I'll omit it description [for now](#app).*
-2. A tests, maked with using GoogleTest <br>
+2. A tests, created using GoogleTest  
 *Omit that [too](#tests).*
 
 ## Main Point and usage
