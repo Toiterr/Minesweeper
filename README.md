@@ -18,7 +18,7 @@ class Game
 {
 private:
 	struct Cell {...};
-	std::vector&lt;std::vector&lt;Cell&gt;&gt; cells_;
+	std::vector<Cell> cells_;
 	const int gridSize_;
 	int count_;
 public:
