@@ -78,6 +78,8 @@ struct Cell {
 Game game(5, 10); //arguments is grid size (NxN) and count of mines
 a.start(3, 4) //arguments is starting position(always safe)
 ```
+> [!NOTE]
+> You can use .start(..) again on that object to recreate the field and restart the game
 
 * The library also provides methods to interact with certain cells by their position(getAroundMines for example):
 
@@ -155,6 +157,7 @@ I have integrated the GoogleTest framework and tested in [separated file](/tests
 4. When you use game.flag(..) you can't open any cell
 5. Is a win condition(all mines have flags) works correctly
 6. Is a lose condition(opening a mine) works correctly
+7. Is the restart mechanic works correctly
 
 > [!NOTE]
 > I may add more tests in the future
