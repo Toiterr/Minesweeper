@@ -5,5 +5,6 @@ private:
 	Game& game;
 public:
 	Solver(Game& g) : game(g) {};
-	void step();
+	Result step();
+	Result solve(int maxSteps);
 };

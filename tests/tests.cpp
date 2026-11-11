@@ -115,6 +115,7 @@ TEST(GameTest, Restart) {
 		for (int x = 0; x < a.getSize(); x++) {
 			for (int y = 0; y < a.getSize(); y++) {
 				if (a.isMine(x, y)) {
+					a.flag(x, y);
 					cellPos.push_back(y * a.getSize() + x);
 				}
 			}

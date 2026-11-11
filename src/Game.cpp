@@ -21,9 +21,11 @@ Result Game::start(int x, int y) {
 	std::shuffle(indexs.begin(), indexs.end(), generator);
 	
 	//picking first count_ cards and saying all of them have mines
-	for (auto i = indexs.begin(); i != indexs.begin() + count_; ++i) {
+	for (auto i = indexs.begin(); i != indexs.begin() + maxCount_; ++i) {
 		cells_[*i].mine = true;		
 	}
+
+	count_ = maxCount_;
 	return Result::Sucess;
 }
 
