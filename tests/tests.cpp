@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <gtest/gtest.h>
 #include <Game.h>
 //idk what to describe here +_+
@@ -101,5 +102,38 @@ TEST(GameTest, LoseCondition) {
 			}
 		}
 		EXPECT_EQ(res, Result::Lose);
+	}
+}
+
+TEST(GameTest, Restart) {
+	for (int n = 4; n <= 10; n++) {
+		std::vector<int> cellPos;
+		int diff = n * n / 6.4;
+		Game a(n, diff);
+		a.start(0, 0);
+		a.open(0, 0);
+		for (int x = 0; x < a.getSize(); x++) {
+			for (int y = 0; y < a.getSize(); y++) {
+				if (a.isMine(x, y)) {
+					cellPos.push_back(y * a.getSize() + x);
+				}
+			}
+		}
+		a.start(0, 0);
+		bool randomised = false;
+		int realCount = 0;
+		for (int x = 0; x < a.getSize(); x++) {
+			for (int y = 0; y < a.getSize(); y++) {
+				if (a.isMine(x, y)) {
+					realCount++;
+					if (std::find(cellPos.begin(), cellPos.end(), y * a.getSize() + x) == cellPos.end()) {
+						randomised = true;
+					}
+				}
+			}
+		}
+		EXPECT_EQ(realCount, diff);
+		EXPECT_TRUE(randomised);
+	
 	}
 }
