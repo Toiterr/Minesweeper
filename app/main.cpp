@@ -7,8 +7,8 @@
 
 void show(Game game) { //console visualisation
 	std::cout << "====================" << std::endl;
-	for (int i = 0; i < game.getSize(); i++) {
-		for (int j = 0; j < game.getSize(); j++) {
+	for (size_t i = 0; i < game.getSize(); i++) {
+		for (size_t j = 0; j < game.getSize(); j++) {
 			if (game.isOpened(j, i)) { //if not opened - cell shows as #
 				if (game.isMine(j, i)) {
 					std::cout << "*"; //if you meet a mine - it shows as *
@@ -32,16 +32,16 @@ void show(Game game) { //console visualisation
 
 int main() {
 	std::cout << "Enter size: ";
-	int n;
+	size_t n;
 	std::cin >> n;
 	std::cout << "Choose difficulty(from 1(very easy) to 5(very hard): ";
-	int diff;
+	size_t diff;
 	std::cin >> diff;
 	Game a(n, n*n*(std::log(diff+1)/(6.4*std::log(4)))); //n*n/6.4 - a normal difficult's amount of mines in minesweeper games, as i understood it
 	while (true) {
 		std::cout << "Enter pos to start: ";
-		int x;
-		int y;
+		size_t x;
+		size_t y;
 		std::cin >> x >> y;
 		a.start(x - 1, y - 1); //For user friendly interface(for user, counting starts from 1)
 		a.open(x - 1, y - 1); //likewise
@@ -50,55 +50,46 @@ int main() {
 		Solver solver(a);
 		do {	
 			std::cout << "Enter operation(0 - open, 1 - flag, 2 - solverStep) and pos: ";
-			int op;
-			int x;
-			int y;
-			std::cin >> op >> x >> y;
-
+			size_t op;
+			size_t x;
+			size_t y;
+			Result res;
+			std::cin >> op;
 			switch (op) {
 			case 2:
-				solver.step();
+				res = solver.solve(100);
 				break;
 			case 1:
-				switch (a.flag(x - 1, y - 1)) {
-				case Result::InvalidCord:
-					std::cout << "You entered invalid coordinates";
-					break;
-				case Result::AlreadyOpened:
-					std::cout << "You already opened that cell";
-					break;
-				case Result::Win:
-					std::cout << "You win!";
-					gameContinues = false;
-					break;
-				default:
-					break;
-				}
+				std::cin >> x >> y;
+				res = a.flag(x - 1, y - 1);
 				break;
-			case 0:
-				switch (a.open(x - 1, y - 1)) {
-				case Result::InvalidCord:
-					std::cout << "You entered invalid coordinates";
-					break;
-				case Result::AlreadyOpened:
-					std::cout << "You already opened that cell";
-					break;
-				case Result::Lose:
-					std::cout << "You lose :(";
-					gameContinues = false;
-					break;
-				case Result::Win:
-					std::cout << "You win!";
-					gameContinues = false;
-					break;
-				default:
-					break;
-				}
+			default:
+				std::cin >> x >> y;
+				res = a.open(x - 1, y - 1);
 				break;
 			}
+			switch (res) {
+			case Result::InvalidCord:
+				std::cout << "You entered invalid coordinates";
+				break;
+			case Result::AlreadyOpened:
+				std::cout << "You already opened that cell";
+				break;
+			case Result::Win:
+				std::cout << "You win!";
+				gameContinues = false;
+				break;
+			case Result::Lose:
+				std::cout << "You lose :(";
+				gameContinues = false;
+				break;
+			default:
+				break;
+			}
+			std::cout << std::endl;
 			show(a);
 			std::cout << std::endl;
 		} while (gameContinues);
 	}
-
+	return 0;
 }

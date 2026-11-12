@@ -1,8 +1,8 @@
 #include "Solver.h"
 
 Result Solver::step() {
-	static int dirx[8] = { 0, 0, -1, -1, -1, 1, 1, 1 };
-	static int diry[8] = { -1, 1, -1, 0, 1, -1, 0, 1 };
+	static short dirx[8] = { 0, 0, -1, -1, -1, 1, 1, 1 };
+	static short diry[8] = { -1, 1, -1, 0, 1, -1, 0, 1 };
 	Result res = Result::Sucess;
 
 	for (int x = 0; x < game.getSize(); x++) {
@@ -47,7 +47,7 @@ Result Solver::step() {
 Result Solver::solve(int maxSteps) {
 	Result res = step();
 
-	for (int i = 0; i < maxSteps; i++) {
+	for (size_t i = 0; i < maxSteps; i++) {
 		res = step();
 		if (res < Result::Sucess) {
 			break;

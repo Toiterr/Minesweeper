@@ -1,12 +1,25 @@
 #include <algorithm>
 #include <gtest/gtest.h>
 #include <Game.h>
+
 //idk what to describe here +_+
 
+//TEST(GameTest, MemoryCheck) {
+//	for (unsigned int n = 1000; n < 4294967295; n++) {
+//		Game a(n, 1);
+//		EXPECT_EQ(a.start(n - 1, n - 1), Result::Sucess);
+//		EXPECT_EQ(a.open(n - 1, n - 1), Result::AlreadyOpened);
+//		EXPECT_EQ(a.flag(0, 0), Result::Sucess);
+//		EXPECT_EQ(a.flag(n - 1, 0), Result::Sucess);
+//		EXPECT_EQ(a.flag(0, n - 1), Result::Sucess);
+//	}
+//}
+//!!! - STACK OVERFLOW BECAUSE OF DFS OPENING
+
 TEST(GameTest, StartCellWithoutMine) {
-	for (int n = 1; n < 10; n++) {
-		for (int x = 0; x < n; x++) {
-			for (int y = 0; y < n; y++) {
+	for (unsigned int n = 1; n < 10; n++) {
+		for (size_t x = 0; x < n; x++) {
+			for (size_t y = 0; y < n; y++) {
 				Game a(n, n * n - 1);
 				a.start(x, y);
 				EXPECT_FALSE(a.isMine(x, y));
@@ -16,13 +29,13 @@ TEST(GameTest, StartCellWithoutMine) {
 }
 
 TEST(GameTest, CorrectMineAmount) {
-	for (int n = 1; n < 10; n++) {
-		for (int am = 0; am < n * n; am++) {
+	for (unsigned int n = 1; n < 10; n++) {
+		for (size_t am = 0; am < n * n; am++) {
 			Game a(n, am);
 			a.start(0, 0);
-			int amount = 0;
-			for (int i = 0; i < a.getSize(); i++) {
-				for (int j = 0; j < a.getSize(); j++) {
+			size_t amount = 0;
+			for (size_t i = 0; i < a.getSize(); i++) {
+				for (size_t j = 0; j < a.getSize(); j++) {
 					amount += a.isMine(i, j);
 				}
 			}
@@ -32,17 +45,17 @@ TEST(GameTest, CorrectMineAmount) {
 }
 
 TEST(GameTest, CorrectAroundMinesCount) {
-	for (int n = 1; n < 10; n++) {
-		for (int am = 0; am < n * n; am++) {
+	for (unsigned int n = 1; n < 10; n++) {
+		for (size_t am = 0; am < n * n; am++) {
 			Game a(n, am);
 			a.start(0, 0);
-			for (int x = 0; x < a.getSize(); x++) {
-				for (int y = 0; y < a.getSize(); y++) {
+			for (size_t x = 0; x < a.getSize(); x++) {
+				for (size_t y = 0; y < a.getSize(); y++) {
 					if (!a.isMine(x, y)) {
 						a.open(x, y);
-						int real = 0;
-						for (int dx = -1; dx < 2; dx++) {
-							for (int dy = -1; dy < 2; dy++) {
+						size_t real = 0;
+						for (short dx = -1; dx < 2; dx++) {
+							for (short dy = -1; dy < 2; dy++) {
 								real += a.isMine(x + dx, y + dy);
 							}
 						}
@@ -55,17 +68,17 @@ TEST(GameTest, CorrectAroundMinesCount) {
 }
 
 TEST(GameTest, FlaggingIsntOpening) {
-	for (int n = 1; n < 10; n++) {
+	for (unsigned int n = 1; n < 10; n++) {
 		Game a(n, n * n / 6.4);
 		a.start(0, 0);
 		a.open(0, 0);
-		for (int x = 0; x < n; x++) {
-			for (int y = 0; y < n; y++) {
+		for (size_t x = 0; x < n; x++) {
+			for (size_t y = 0; y < n; y++) {
 				a.flag(x, y);
 			}
 		}
-		for (int x = 0; x < n; x++) {
-			for (int y = 0; y < n; y++) {
+		for (size_t x = 0; x < n; x++) {
+			for (size_t y = 0; y < n; y++) {
 				EXPECT_TRUE(a.isFlagged(x, y) != a.isOpened(x, y));
 			}
 		}
@@ -73,12 +86,12 @@ TEST(GameTest, FlaggingIsntOpening) {
 }
 
 TEST(GameTest, WinCondition) {
-	for (int n = 2; n < 10; n++) {
+	for (unsigned int n = 2; n < 10; n++) {
 		Game a(n, n * n - 1);
 		a.start(0, 0);
 		Result res;
-		for (int x = 0; x < n; x++) {
-			for (int y = 0; y < n; y++) {
+		for (size_t x = 0; x < n; x++) {
+			for (size_t y = 0; y < n; y++) {
 				if (a.isMine(x, y)) {
 					res = a.flag(x, y);
 				}
@@ -89,12 +102,12 @@ TEST(GameTest, WinCondition) {
 }
 
 TEST(GameTest, LoseCondition) {
-	for (int n = 2; n < 10; n++) {
+	for (size_t n = 2; n < 10; n++) {
 		Game a(n, n * n - 1);
 		a.start(0, 0);
 		Result res;
-		for (int x = 0; x < n; x++) {
-			for (int y = 0; y < n; y++) {
+		for (size_t x = 0; x < n; x++) {
+			for (size_t y = 0; y < n; y++) {
 				if (a.isMine(x, y)) {
 					res = a.open(x, y);
 					break;
@@ -106,14 +119,14 @@ TEST(GameTest, LoseCondition) {
 }
 
 TEST(GameTest, Restart) {
-	for (int n = 4; n <= 10; n++) {
-		std::vector<int> cellPos;
-		int diff = n * n / 6.4;
+	for (size_t n = 4; n <= 10; n++) {
+		std::vector<size_t> cellPos;
+		size_t diff = n * n / 6.4;
 		Game a(n, diff);
 		a.start(0, 0);
 		a.open(0, 0);
-		for (int x = 0; x < a.getSize(); x++) {
-			for (int y = 0; y < a.getSize(); y++) {
+		for (size_t x = 0; x < a.getSize(); x++) {
+			for (size_t y = 0; y < a.getSize(); y++) {
 				if (a.isMine(x, y)) {
 					a.flag(x, y);
 					cellPos.push_back(y * a.getSize() + x);
@@ -122,9 +135,9 @@ TEST(GameTest, Restart) {
 		}
 		a.start(0, 0);
 		bool randomised = false;
-		int realCount = 0;
-		for (int x = 0; x < a.getSize(); x++) {
-			for (int y = 0; y < a.getSize(); y++) {
+		size_t realCount = 0;
+		for (size_t x = 0; x < a.getSize(); x++) {
+			for (size_t y = 0; y < a.getSize(); y++) {
 				if (a.isMine(x, y)) {
 					realCount++;
 					if (std::find(cellPos.begin(), cellPos.end(), y * a.getSize() + x) == cellPos.end()) {
