@@ -34,7 +34,7 @@ Result Game::open(size_t x, size_t y) {
 	if (x >= gridSize_ || y >= gridSize_) {
 		return Result::InvalidCord;
 	}
-	if (cells_[y*gridSize_+x].opened) {
+	if (cells_[y*gridSize_+x].opened || cells_[y*gridSize_+x].flagged) {
 		return Result::AlreadyOpened;
 	}
 	cells_[y*gridSize_+x].opened = true;
@@ -45,24 +45,40 @@ Result Game::open(size_t x, size_t y) {
 	static short dirx[8] = { 0, 0, -1, -1, -1, 1, 1, 1 };
 	static short diry[8] = { -1, 1, -1, 0, 1, -1, 0, 1 };
 
-	size_t aroundmines = 0;
-	for (unsigned short i = 0; i < 8; i++) {
-		if ((x + dirx[i]) >= 0 && (x + dirx[i]) < gridSize_ && 
-			(y + diry[i]) >= 0 && (y + diry[i]) < gridSize_) {
-			if (cells_[(y + diry[i]) * gridSize_ + (x + dirx[i])].mine) {
-				aroundmines++;
-			}
-		}
-	}
-	cells_[y*gridSize_+x].aroundmines = aroundmines;
-	if (!count_) {
-		return Result::Win;
-	}
-	if (!aroundmines) { //DFS opening if there is 0 mines around ---- CAUSING STACK OVERFLOW (rewrite to BFS)
+	std::queue<int> queue;
+	queue.push(y * gridSize_ + x);
+
+	while (!queue.empty()) {
+		int cell = queue.front();
+		queue.pop();
+		int x = cell % gridSize_;
+		int y = cell / gridSize_;
+
+		size_t aroundmines = 0;
+
 		for (unsigned short i = 0; i < 8; i++) {
 			if ((x + dirx[i]) >= 0 && (x + dirx[i]) < gridSize_ &&
 				(y + diry[i]) >= 0 && (y + diry[i]) < gridSize_) {
-				open(x + dirx[i], y + diry[i]);
+				if (cells_[(y + diry[i]) * gridSize_ + (x + dirx[i])].mine) {
+					aroundmines++;
+				}
+			}
+		}
+		cells_[y * gridSize_ + x].aroundmines = aroundmines;
+
+		if (!count_) {
+			return Result::Win;
+		}
+		if (!aroundmines) {
+			for (unsigned short i = 0; i < 8; i++) {
+				if ((x + dirx[i]) >= 0 && (x + dirx[i]) < gridSize_ &&
+					(y + diry[i]) >= 0 && (y + diry[i]) < gridSize_) {
+					Cell& c = cells_[(y + diry[i]) * gridSize_ + x + dirx[i]];
+					if (!c.opened && !c.flagged) {
+						c.opened = true;
+						queue.push((y + diry[i]) * gridSize_ + x + dirx[i]);
+					}
+				}
 			}
 		}
 	}

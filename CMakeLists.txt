@@ -19,7 +19,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 add_library(Minesweeper STATIC
-	src/Game.cpp
+	minesweeper/Game.cpp
 )
 
 target_include_directories(Minesweeper

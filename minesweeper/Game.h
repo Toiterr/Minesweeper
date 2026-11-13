@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <random>
 #include <vector>
+#include <queue>
 
 //allows to do any operation with any parameter and just check what will happen
 enum class Result {

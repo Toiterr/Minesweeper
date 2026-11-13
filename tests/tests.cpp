@@ -4,17 +4,15 @@
 
 //idk what to describe here +_+
 
-//TEST(GameTest, MemoryCheck) {
-//	for (unsigned int n = 1000; n < 4294967295; n++) {
-//		Game a(n, 1);
-//		EXPECT_EQ(a.start(n - 1, n - 1), Result::Sucess);
-//		EXPECT_EQ(a.open(n - 1, n - 1), Result::AlreadyOpened);
-//		EXPECT_EQ(a.flag(0, 0), Result::Sucess);
-//		EXPECT_EQ(a.flag(n - 1, 0), Result::Sucess);
-//		EXPECT_EQ(a.flag(0, n - 1), Result::Sucess);
-//	}
-//}
-//!!! - STACK OVERFLOW BECAUSE OF DFS OPENING
+TEST(GameTest, RangeCheck) {
+	size_t n = 1000;
+	Game a(n, 1);
+	EXPECT_EQ(a.start(n - 1, n - 1), Result::Sucess);
+	EXPECT_EQ(a.flag(0, 0), Result::Sucess);
+	EXPECT_EQ(a.flag(n - 1, 0), Result::Sucess);
+	EXPECT_EQ(a.flag(0, n - 1), Result::Sucess);
+	EXPECT_EQ(a.open(n - 1, n - 1), Result::Sucess);
+}
 
 TEST(GameTest, StartCellWithoutMine) {
 	for (unsigned int n = 1; n < 10; n++) {
