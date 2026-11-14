@@ -5,7 +5,6 @@ Welcome to the Minesweeper repository. This is my simple library for minesweeper
 > That project is currently in development, after pushing it here, I plan to add:
 > - [x] Difficulty settings
 > - [ ] Solver algorithm
-> - [ ] Strategy comparison
 
 ## Main Information
 Library is single-class and all main code is in two files:
