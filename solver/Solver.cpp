@@ -1,46 +1,71 @@
 #include "Solver.h"
 
+//std::vector<bool> Solver::systemSolve(std::vector<Constraint> system) {
+//
+//}
+
 Result Solver::step() {
 	static short dirx[8] = { 0, 0, -1, -1, -1, 1, 1, 1 };
 	static short diry[8] = { -1, 1, -1, 0, 1, -1, 0, 1 };
 	Result res = Result::Sucess;
+	std::vector<Constraint> system;
+	size_t size = game_.getSize();
 
-	for (int x = 0; x < game.getSize(); x++) {
-		for (int y = 0; y < game.getSize(); y++) {
+	for (int x = 0; x < size; x++) {
+		for (int y = 0; y < size; y++) {
 			if (res < Result::Sucess) {
 				return res;
 			}
-			if (!game.isOpened(x, y)) {
+			if (!game_.isOpened(x, y)) {
 				continue;
 			}
 
 			int flags = 0;
 			int closed = 0;
 
+			Constraint c;
+			c.mines = game_.getAroundMines(x, y);
 			for (int i = 0; i < 8; i++) {
-				if (x + dirx[i] >= 0 && x + dirx[i] < game.getSize() &&
-					y + diry[i] >= 0 && y + diry[i] < game.getSize()) {
-					flags += game.isFlagged(x + dirx[i], y + diry[i]);
-					closed += !game.isOpened(x + dirx[i], y + diry[i]);
+				if (x + dirx[i] >= 0 && x + dirx[i] < size &&
+					y + diry[i] >= 0 && y + diry[i] < size) {
+					if (game_.isFlagged(x + dirx[i], y + diry[i])) {
+						c.mines--;
+					}
+					else if (!game_.isOpened(x + dirx[i], y + diry[i])) {
+						c.variables.push_back((y + diry[i]) * size + x + dirx[i]);
+					}
+
+					//flags += game_.isFlagged(x + dirx[i], y + diry[i]);
+					//closed += !game_.isOpened(x + dirx[i], y + diry[i]);
 				}
 			}
 
-			if (flags == game.getAroundMines(x, y)) {
-				for (int i = 0; i < 8; i++) {
-					if (!game.isFlagged(x + dirx[i], y + diry[i])) {
-						res = game.open(x + dirx[i], y + diry[i]);
-					}
+			if (!c.mines) {
+				for (auto i = c.variables.begin(); i != c.variables.end(); ++i) {
+					res = game_.open(*i % size, *i / size);
 				}
+				//for (int i = 0; i < 8; i++) {
+				//	if (!game_.isFlagged(x + dirx[i], y + diry[i])) {
+				//		res = game_.open(x + dirx[i], y + diry[i]);
+				//	}
+				//}
 			}
-			else if (closed == game.getAroundMines(x, y)) {
-				for (int i = 0; i < 8; i++) {
-					if (!game.isOpened(x + dirx[i], y + diry[i]) && !game.isFlagged(x + dirx[i], y + diry[i])) {
-						res = game.flag(x + dirx[i], y + diry[i]);
-					}
+			else if (c.mines == c.variables.size()) {
+				for (auto i = c.variables.begin(); i != c.variables.end(); ++i) {
+					res = game_.flag(*i % size, *i / size);
 				}
+				//for (int i = 0; i < 8; i++) {
+				//	if (!game_.isOpened(x + dirx[i], y + diry[i]) && !game_.isFlagged(x + dirx[i], y + diry[i])) {
+				//		res = game_.flag(x + dirx[i], y + diry[i]);
+				//	}
+				//}
+			}
+			else {
+				system.push_back(c);
 			}
 		}
 	}
+	//for (auto i = systemSolve(system) { if *i - flag / else - open }
 	return res;
 }
 
