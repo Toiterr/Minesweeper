@@ -65,6 +65,28 @@ Result Solver::step() {
 			}
 		}
 	}
+
+	std::unordered_map<int, std::vector<Constraint&>> graph;
+	for (auto constr : system) {
+		for (auto var : constr.variables) {
+			graph[var].push_back(constr);
+		}
+	}
+
+	std::unordered_set<int> visited;
+	for (auto [var, connects] : graph) {
+		auto [i, insert] = visited.insert(var);
+		if (!insert) {
+			continue;
+		}
+		std::unordered_set<int> group;
+		group.insert(var);
+		for (auto constr : connects) {
+			for (int var : constr.variables) {
+				group.insert(var);
+			}
+		}
+	}
 	//for (auto i = systemSolve(system) { if *i - flag / else - open }
 	return res;
 }

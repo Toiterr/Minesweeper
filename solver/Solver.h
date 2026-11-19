@@ -1,4 +1,6 @@
 #include "Game.h"
+#include <unordered_set>
+#include <unordered_map>
 
 struct Constraint {
 	std::vector<int> variables;
