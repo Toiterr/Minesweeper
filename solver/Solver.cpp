@@ -65,29 +65,47 @@ Result Solver::step() {
 			}
 		}
 	}
-
-	std::unordered_map<int, std::vector<Constraint&>> graph;
-	for (auto constr : system) {
-		for (auto var : constr.variables) {
-			graph[var].push_back(constr);
+	if (system.size() > 0) {
+		std::unordered_map<int, std::unordered_set<int>> adjList;
+		for (auto constr : system) {
+			for (auto var1 : constr.variables) {
+				for (auto var2 : constr.variables) {
+					if (var1 != var2) {
+						adjList[var1].insert(var2);
+					}
+				}
+			}
 		}
-	}
 
-	std::unordered_set<int> visited;
-	for (auto [var, connects] : graph) {
-		auto [i, insert] = visited.insert(var);
-		if (!insert) {
-			continue;
-		}
-		std::unordered_set<int> group;
-		group.insert(var);
-		for (auto constr : connects) {
-			for (int var : constr.variables) {
-				group.insert(var);
+		while (!adjList.empty()) {
+			std::unordered_set<int> visited;
+			std::vector<int> queue;
+
+			int start = adjList.begin()->first;
+			visited.insert(start);
+			queue.push_back(start);
+
+			for (size_t i = 0; i < queue.size(); ++i) {
+				auto it = adjList.find(queue[i]);
+				if (it != adjList.end()) {
+					for (auto connect : it->second) {
+						if (visited.insert(connect).second) {
+							queue.push_back(connect);
+						}
+					}
+					adjList.erase(it);
+				}
+			}
+
+			std::vector<Constraint> subSystem;
+			for (auto constr : system) {
+				if (visited.contains(constr.variables[0])) {
+					subSystem.push_back(constr);
+				}
 			}
 		}
 	}
-	//for (auto i = systemSolve(system) { if *i - flag / else - open }
+	//for (auto i = systemSolve(subSystem) { if *i - flag / else - open }
 	return res;
 }
 
