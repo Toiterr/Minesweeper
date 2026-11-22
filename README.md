@@ -145,7 +145,7 @@ if (game.open(x, y) == Result::Lose) {
 
 # App
 This project also includes a [console-based app](/app/main.cpp) that demonstrates the capabilities of the library.  
-> [WARNING!]
+> [!WARNING]
 > The app isn't part of the library and is of a demonstrative nature.
 
 The [".cpp"](/src/Game.cpp) file contains all the necessary comments for understaning. *I see no point in describing it here in detail.*
@@ -168,7 +168,7 @@ All tests pass, you can verify it yourself by launching [tests file](/tests/test
 
 # Solver
 
-> [CAUTION!]
+> [!CAUTION]
 > Following section contains AI-generated code. Despite its full functionality, algorithm may still contain critical vulnerabilities.
 Until I fully understand the topic, I wouldn't recommend considering this section a full-fledged part of the project.
 
@@ -202,10 +202,10 @@ After creating the game SLAE, solver uses DFS to find in general system all subs
 
 ### System solve
 
-> [CAUTION!]
+> [!CAUTION]
 > Still in progress
 
 ### Probability calculation
 
-> [CAUTION!]
+> [!CAUTION]
 > Still in progress
