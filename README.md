@@ -2,9 +2,10 @@
 Welcome to the Minesweeper repository. This is my simple library for minesweeper games.
 
 > [!WARNING]
-> That project is currently in development, after pushing it here, I plan to add:
+> This project is currently in development, after pushing it here, I plan to add:
 > - [x] Difficulty settings
 > - [ ] Solver algorithm
+> - [ ] Fair mode(auto-win in 50/50 situations)
 
 ## Main Information
 Library is single-class and all main code is in two files:
@@ -143,7 +144,9 @@ if (game.open(x, y) == Result::Lose) {
 * *And some other stuff that i can't imagine*
 
 # App
-This project also includes a [console-based app](/app/main.cpp) that demonstrates the capabilities of the library.
+This project also includes a [console-based app](/app/main.cpp) that demonstrates the capabilities of the library.  
+> [WARNING!]
+> The app isn't part of the library and is of a demonstrative nature.
 
 The [".cpp"](/src/Game.cpp) file contains all the necessary comments for understaning. *I see no point in describing it here in detail.*
 
@@ -162,3 +165,47 @@ I have integrated the GoogleTest framework and tested in [separated file](/tests
 > I may add more tests in the future
 
 All tests pass, you can verify it yourself by launching [tests file](/tests/tests.cpp)
+
+# Solver
+
+> [CAUTION!]
+> Following section contains AI-generated code. Despite its full functionality, algorithm may still contain critical vulnerabilities.
+Until I fully understand the topic, I wouldn't recommend considering this section a full-fledged part of the project.
+
+## Main Information
+
+The library also includes the solver algorithm which is *separated* from source library code and can be connected by including Solver.h:
+
+```cpp
+#include <Solver.h>
+...
+Game game(n, n*n/6.4);
+Solver a(game);
+...
+Result res = a.solve(maxStepsAmount) //argument is int type
+//Method completes the game and return uncompleted field if amount of steps is higher than the specified one
+```
+
+## Solving algorithm
+
+Solver's algorithm is based on SLAE solving(CPS method) and can be divided into 4 parts: pre-system analysis, division on systems, system solve
+and probability calculation.
+
+### Pre-system analysis
+
+Solver checks all cells on field and constitutes Constraints, but before adding constraint in the system, it checks if around cells can
+be opened instantly. If it is, cells won't be added to the SLAE.
+
+### Division on systems
+
+After creating the game SLAE, solver uses DFS to find in general system all subsystems and solve all of them separately.
+
+### System solve
+
+> [CAUTION!]
+> Still in progress
+
+### Probability calculation
+
+> [CAUTION!]
+> Still in progress
