@@ -188,7 +188,7 @@ Result res = a.solve(maxStepsAmount) //argument is int type
 
 ## Solving algorithm
 
-Solver's algorithm is based on SLAE solving(CPS method) and can be divided into 4 parts: pre-system analysis, division on systems, system solve
+Solver's algorithm is based on SLAE solving(CSP method) and can be divided into 4 parts: pre-system analysis, division on systems, system solve
 and probability calculation.
 
 ### Pre-system analysis
@@ -198,7 +198,7 @@ be opened instantly. If it is, cells won't be added to the SLAE.
 
 ### Division on systems
 
-After creating the game SLAE, solver uses DFS to find in general system all subsystems and solve all of them separately.
+After creating the game SLAE, solver uses BFS to find in general system all subsystems and solve all of them separately.
 
 ### System solve
 
