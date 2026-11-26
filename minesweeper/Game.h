@@ -8,7 +8,7 @@
 enum class Result {
 	Lose,
 	Win,
-	Sucess,
+	Success,
 	InvalidCord,
 	AlreadyOpened
 };

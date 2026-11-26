@@ -26,7 +26,7 @@ Result Game::start(size_t x, size_t y) {
 	}
 
 	count_ = maxCount_;
-	return Result::Sucess;
+	return Result::Success;
 }
 
 //opening a cell
@@ -82,7 +82,7 @@ Result Game::open(size_t x, size_t y) {
 			}
 		}
 	}
-	return Result::Sucess;
+	return Result::Success;
 }
 //flagging/unflagging a cell
 Result Game::flag(size_t x, size_t y) {
@@ -104,7 +104,7 @@ Result Game::flag(size_t x, size_t y) {
 	if (!count_) { //win condition - all mines have flags
 		return Result::Win;
 	}
-	return Result::Sucess;
+	return Result::Success;
 }
 
 void Game::setMine(size_t x, size_t y, bool state) {

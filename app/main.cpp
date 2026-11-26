@@ -13,7 +13,7 @@ void show(Game game) { //console visualisation
 				if (game.isMine(j, i)) {
 					std::cout << "*"; //if you meet a mine - it shows as *
 				} else {
-					std::cout << game.getAroundMines(j, i); //if you sucessfully opened cell - it shows amount of mines around
+					std::cout << game.getAroundMines(j, i); //if you Successfully opened cell - it shows amount of mines around
 				}
 			} else {
 				if (game.isFlagged(j, i)) {

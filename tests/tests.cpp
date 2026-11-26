@@ -7,11 +7,11 @@
 TEST(GameTest, RangeCheck) {
 	size_t n = 1000;
 	Game a(n, 1);
-	EXPECT_EQ(a.start(n - 1, n - 1), Result::Sucess);
-	EXPECT_EQ(a.flag(0, 0), Result::Sucess);
-	EXPECT_EQ(a.flag(n - 1, 0), Result::Sucess);
-	EXPECT_EQ(a.flag(0, n - 1), Result::Sucess);
-	EXPECT_EQ(a.open(n - 1, n - 1), Result::Sucess);
+	EXPECT_EQ(a.start(n - 1, n - 1), Result::Success);
+	EXPECT_EQ(a.flag(0, 0), Result::Success);
+	EXPECT_EQ(a.flag(n - 1, 0), Result::Success);
+	EXPECT_EQ(a.flag(0, n - 1), Result::Success);
+	EXPECT_EQ(a.open(n - 1, n - 1), Result::Success);
 }
 
 TEST(GameTest, StartCellWithoutMine) {

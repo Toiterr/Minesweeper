@@ -10,10 +10,16 @@ struct Constraint {
 class Solver {
 private:
 	Game& game_;
+	size_t size;
+	std::unordered_map<int, int> solutions;
+	static constexpr int dirx[8] = { 0, 0, -1, -1, -1, 1, 1, 1 };
+	static constexpr int diry[8] = { -1, 1, -1, 0, 1, -1, 0, 1 };
 public:
-	Solver(Game& g) : game_(g) {};
+	Solver(Game& g) : game_(g), size(g.getSize()) {};
+	std::unordered_map<int, int> systemSolve(std::vector<Constraint> sys);
 	Result step();
+	Result system();
+	Result probabilities(int maxSteps);
 	Result solve(int maxSteps);
-	//std::vector<bool> systemSolve(std::vector<Constraint> system);
 };
 
